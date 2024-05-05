@@ -1,0 +1,101 @@
+import java.util.ArrayList;
+
+// Interface para definir métodos de salvar e recuperar dados
+interface DataHandler {
+    void saveData(ArrayList<String> data);
+    ArrayList<String> retrieveData();
+}
+
+// Classe abstrata para gerenciar operações de cadastro, modificação e eliminação de itens
+abstract class DataManager {
+    abstract void cadastrarItem(String item);
+    abstract void modificarItem(String item);
+    abstract void eliminarItem(String item);
+}
+
+// Classe para calcular vendas e aplicar descontos percentuais
+class SalesCalculator {
+    public double calcularVendaComDesconto(double preco, double descontoPercentual) {
+        return preco * (1 - descontoPercentual / 100);
+    }
+}
+
+// Interface para definir métodos de gerenciamento de estoque
+interface StockManagement {
+    void adicionarItemEstoque(String item);
+    void removerItemEstoque(String item);
+    void imprimirEstoque();
+}
+
+// Classe para gerenciar o estoque de produtos
+class StockManager extends DataManager implements StockManagement {
+    private ArrayList<String> stock;
+
+    public StockManager() {
+        stock = new ArrayList<>();
+    }
+
+    Override
+    public void cadastrarItem(String item) {
+        stock.add(item);
+    }
+
+    Override
+    public void modificarItem(String item) {
+        // Lógica para modificar um item existente
+    }
+
+    Override
+    public void eliminarItem(String item) {
+        stock.remove(item);
+    }
+
+    Override
+    public void adicionarItemEstoque(String item) {
+        cadastrarItem(item);
+    }
+
+    Override
+    public void removerItemEstoque(String item) {
+        eliminarItem(item);
+    }
+
+    Override
+    public void imprimirEstoque() {
+        for (String item : stock) {
+            System.out.println(item);
+        }
+    }
+}
+
+// Classe para salvar e recuperar dados em arquivos
+class FileHandler implements DataHandler {
+    Override
+    public void saveData(ArrayList<String> data) {
+        // Lógica para salvar os dados em um arquivo
+    }
+
+    Override
+    public ArrayList<String> retrieveData() {
+        // Lógica para recuperar os dados de um arquivo
+        return new ArrayList<String>(); // Apenas um retorno de exemplo
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Exemplo de uso das classes
+        FileHandler fileHandler = new FileHandler();
+        ArrayList<String> data = fileHandler.retrieveData();
+        // Supondo que haja dados recuperados, fazemos algo com eles
+        
+        StockManager stockManager = new StockManager();
+        stockManager.adicionarItemEstoque("Produto A");
+        stockManager.adicionarItemEstoque("Produto B");
+        stockManager.removerItemEstoque("Produto B");
+        stockManager.imprimirEstoque();
+        
+        SalesCalculator salesCalculator = new SalesCalculator();
+        double precoComDesconto = salesCalculator.calcularVendaComDesconto(100, 10); // Preço com 10% de desconto
+    }
+}
