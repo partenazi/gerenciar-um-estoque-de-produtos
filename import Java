@@ -1,101 +1,150 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
-// Interface para definir métodos de salvar e recuperar dados
-interface DataHandler {
-    void saveData(ArrayList<String> data);
-    ArrayList<String> retrieveData();
-}
+// Classe para representar um sorvete
+class Sorvete {
+    private String sabor;
+    private int quantidade;
 
-// Classe abstrata para gerenciar operações de cadastro, modificação e eliminação de itens
-abstract class DataManager {
-    abstract void cadastrarItem(String item);
-    abstract void modificarItem(String item);
-    abstract void eliminarItem(String item);
-}
+    public Sorvete(String sabor, int quantidade) {
+        this.sabor = sabor;
+        this.quantidade = quantidade;
+    }
 
-// Classe para calcular vendas e aplicar descontos percentuais
-class SalesCalculator {
-    public double calcularVendaComDesconto(double preco, double descontoPercentual) {
-        return preco * (1 - descontoPercentual / 100);
+    // Getters e Setters
+    public String getSabor() {
+        return sabor;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
     }
 }
 
-// Interface para definir métodos de gerenciamento de estoque
-interface StockManagement {
-    void adicionarItemEstoque(String item);
-    void removerItemEstoque(String item);
-    void imprimirEstoque();
-}
+// Classe para gerenciar o carrinho de compras
+class CarrinhoCompras {
+    private ArrayList<Sorvete> carrinho;
 
-// Classe para gerenciar o estoque de produtos
-class StockManager extends DataManager implements StockManagement {
-    private ArrayList<String> stock;
-
-    public StockManager() {
-        stock = new ArrayList<>();
+    public CarrinhoCompras() {
+        this.carrinho = new ArrayList<>();
     }
 
-    Override
-    public void cadastrarItem(String item) {
-        stock.add(item);
+    // Adicionar sorvete ao carrinho
+    public void adicionarSorvete(Sorvete sorvete) {
+        carrinho.add(sorvete);
     }
 
-    Override
-    public void modificarItem(String item) {
-        // Lógica para modificar um item existente
+    // Excluir sorvete do carrinho
+    public void excluirSorvete(int indice) {
+        carrinho.remove(indice);
     }
 
-    Override
-    public void eliminarItem(String item) {
-        stock.remove(item);
+    // Editar quantidade de sorvete no carrinho
+    public void editarQuantidade(int indice, int novaQuantidade) {
+        carrinho.get(indice).setQuantidade(novaQuantidade);
     }
 
-    Override
-    public void adicionarItemEstoque(String item) {
-        cadastrarItem(item);
+    // Salvar carrinho (pode ser implementado para salvar em um arquivo, por exemplo)
+    public void salvarCarrinho() {
+        // Implementação para salvar o carrinho
     }
 
-    Override
-    public void removerItemEstoque(String item) {
-        eliminarItem(item);
-    }
-
-    Override
-    public void imprimirEstoque() {
-        for (String item : stock) {
-            System.out.println(item);
-        }
+    // Obter lista de sorvetes no carrinho
+    public ArrayList<Sorvete> getListaSorvetes() {
+        return carrinho;
     }
 }
 
-// Classe para salvar e recuperar dados em arquivos
-class FileHandler implements DataHandler {
-    Override
-    public void saveData(ArrayList<String> data) {
-        // Lógica para salvar os dados em um arquivo
-    }
-
-    Override
-    public ArrayList<String> retrieveData() {
-        // Lógica para recuperar os dados de um arquivo
-        return new ArrayList<String>(); // Apenas um retorno de exemplo
+// Classe para mostrar os sabores disponíveis
+class SaboresDisponiveis {
+    public static void mostrarSabores() {
+        System.out.println("Sabores disponíveis:");
+        System.out.println("- Morango");
+        System.out.println("- Chocolate");
+        System.out.println("- Baunilha");
+        // Adicione outros sabores conforme necessário
     }
 }
 
 public class Main {
     public static void main(String[] args) {
-        // Exemplo de uso das classes
-        FileHandler fileHandler = new FileHandler();
-        ArrayList<String> data = fileHandler.retrieveData();
-        // Supondo que haja dados recuperados, fazemos algo com eles
-        
-        StockManager stockManager = new StockManager();
-        stockManager.adicionarItemEstoque("Produto A");
-        stockManager.adicionarItemEstoque("Produto B");
-        stockManager.removerItemEstoque("Produto B");
-        stockManager.imprimirEstoque();
-        
-        SalesCalculator salesCalculator = new SalesCalculator();
-        double precoComDesconto = salesCalculator.calcularVendaComDesconto(100, 10); // Preço com 10% de desconto
+        CarrinhoCompras carrinho = new CarrinhoCompras();
+        Scanner scanner = new Scanner(System.in);
+        boolean continuarCompra = true;
+
+        // Mostrar os sabores disponíveis
+        SaboresDisponiveis.mostrarSabores();
+
+        while (continuarCompra) {
+            // Mostrar o menu
+            System.out.println("\nMenu:");
+            System.out.println("1. Adicionar sorvete ao carrinho");
+            System.out.println("2. Excluir sorvete do carrinho");
+            System.out.println("3. Editar quantidade de sorvete no carrinho");
+            System.out.println("4. Salvar carrinho");
+            System.out.println("5. Finalizar compra");
+
+            // Solicitar a opção do cliente
+            System.out.print("Escolha uma opção: ");
+            int opcao = scanner.nextInt();
+            scanner.nextLine(); // Limpar o buffer do scanner
+
+            switch (opcao) {
+                case 1:
+                    // Adicionar sorvete ao carrinho
+                    System.out.print("Digite o sabor do sorvete desejado: ");
+                    String sabor = scanner.nextLine();
+
+                    System.out.print("Digite a quantidade desejada: ");
+                    int quantidade = scanner.nextInt();
+                    scanner.nextLine(); // Limpar o buffer do scanner
+
+                    carrinho.adicionarSorvete(new Sorvete(sabor, quantidade));
+                    mostrarCarrinho(carrinho);
+                    break;
+                case 2:
+                    // Excluir sorvete do carrinho
+                    System.out.print("Digite o índice do sorvete que deseja excluir: ");
+                    int indiceExcluir = scanner.nextInt();
+                    carrinho.excluirSorvete(indiceExcluir);
+                    mostrarCarrinho(carrinho);
+                    break;
+                case 3:
+                    // Editar quantidade de sorvete no carrinho
+                    System.out.print("Digite o índice do sorvete que deseja editar: ");
+                    int indiceEditar = scanner.nextInt();
+                    System.out.print("Digite a nova quantidade: ");
+                    int novaQuantidade = scanner.nextInt();
+                    carrinho.editarQuantidade(indiceEditar, novaQuantidade);
+                    mostrarCarrinho(carrinho);
+                    break;
+                case 4:
+                    // Salvar carrinho
+                    carrinho.salvarCarrinho();
+                    System.out.println("Carrinho salvo com sucesso!");
+                    break;
+                case 5:
+                    // Finalizar compra
+                    continuarCompra = false;
+                    System.out.println("Compra finalizada. Obrigado!");
+                    break;
+                default:
+                    System.out.println("Opção inválida.");
+            }
+        }
+    }
+
+    // Método para mostrar o carrinho de compras
+    public static void mostrarCarrinho(CarrinhoCompras carrinho) {
+        System.out.println("\nCarrinho de Compras:");
+        ArrayList<Sorvete> listaSorvetes = carrinho.getListaSorvetes();
+        for (int i = 0; i < listaSorvetes.size(); i++) {
+            Sorvete sorvete = listaSorvetes.get(i);
+            System.out.println("- Índice: " + i + ", Sabor: " + sorvete.getSabor() + ", Quantidade: " + sorvete.getQuantidade());
+        }
     }
 }
