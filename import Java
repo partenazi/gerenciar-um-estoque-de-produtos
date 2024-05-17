@@ -87,6 +87,7 @@ public class Main {
             System.out.println("3. Editar quantidade de sorvete no carrinho");
             System.out.println("4. Salvar carrinho");
             System.out.println("5. Finalizar compra");
+            System.out.println("6. Voltar para o menu");
 
             // Solicitar a opção do cliente
             System.out.print("Escolha uma opção: ");
@@ -128,7 +129,10 @@ public class Main {
                     System.out.println("Carrinho salvo com sucesso!");
                     break;
                 case 5:
-                    // Finalizar compra
+                    // Tela de pagamento (finalizar compra)
+                    
+                case 6:
+                    // Voltar menu
                     continuarCompra = false;
                     System.out.println("Compra finalizada. Obrigado!");
                     break;
