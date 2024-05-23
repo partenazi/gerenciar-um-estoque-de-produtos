@@ -11,6 +11,26 @@ public class Pagamento {
         }
         return total;
     }
+    // Método para apresentar a tela de pagamento
+    public static void mostrarTelaPagamento(ArrayList<Sorvete> carrinho) {
+        System.out.println("\nTela de Pagamento:");
+        System.out.println("Itens no Carrinho:");
+
+        // Variável para armazenar o total da compra antes do desconto
+        double totalAntesDesconto = 0.0;
+
+        for (Sorvete sorvete : carrinho) {
+            String sabor = sorvete.getSabor();
+            int quantidade = sorvete.getQuantidade();
+            double precoUnitario = obterPrecoSorvete(sorvete.getSabor()); // Obter preço unitário do sorvete
+            double precoTotal = quantidade * precoUnitario; // Calcular preço total do sorvete
+            totalAntesDesconto += precoTotal; // Adicionar ao total da compra antes do desconto
+            System.out.println("- " + sabor + ", Quantidade: " + quantidade + ", Preço unitário: R$" + precoUnitario + ", Preço total: R$" + precoTotal);
+        }
+
+        // Aplicar desconto, se desejado
+        aplicarDesconto(carrinho);
+    }
 
     // Método para aplicar o desconto e atualizar o preço dos sorvetes
     public static void aplicarDesconto(ArrayList<Sorvete> carrinho) {
@@ -34,29 +54,13 @@ public class Pagamento {
             // Exibir o desconto e o novo total
             System.out.println("Cupom de Desconto Aplicado: " + porcentagemDesconto + "%");
             System.out.println("Total da Compra após Desconto: R$" + novoTotalCompra);
+        } else {
+            double totalSemDesconto = calcularTotal(carrinho);
+            System.out.println("Total da Compra: R$" + totalSemDesconto);
         }
     }
 
-    // Método para apresentar a tela de pagamento
-    public static void mostrarTelaPagamento(ArrayList<Sorvete> carrinho) {
-        System.out.println("\nTela de Pagamento:");
-        System.out.println("Itens no Carrinho:");
-
-        // Variável para armazenar o total da compra antes do desconto
-        double totalAntesDesconto = 0.0;
-
-        for (Sorvete sorvete : carrinho) {
-            String sabor = sorvete.getSabor();
-            int quantidade = sorvete.getQuantidade();
-            double precoUnitario = obterPrecoSorvete(sorvete.getSabor()); // Obter preço unitário do sorvete
-            double precoTotal = quantidade * precoUnitario; // Calcular preço total do sorvete
-            totalAntesDesconto += precoTotal; // Adicionar ao total da compra antes do desconto
-            System.out.println("- " + sabor + ", Quantidade: " + quantidade + ", Preço unitário: R$" + precoUnitario + ", Preço total: R$" + precoTotal);
-        }
-
-        // Aplicar desconto, se desejado
-        aplicarDesconto(carrinho);
-    }
+    
 
     // Método para obter o preço do sorvete pelo sabor
     private static double obterPrecoSorvete(String sabor) {
